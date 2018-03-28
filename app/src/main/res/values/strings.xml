@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">FirstApp2</string>
+    <string name="exercise1">Pompki</string>
+    <string name="exercise2">Brzuszki</string>
+    <string name="exercise3">Przysiady</string>
+    <string name="exercise4">Rowerek</string>
+    <string name="initValue">0</string>
+    <string name="button10">+10</string>
+    <string name="button20">+20</string>
+    <string name="button30">+30</string>
+    <string name="button01">+0.1</string>
+    <string name="button05">+0.5</string>
+    <string name="button1">+1</string>
 </resources>

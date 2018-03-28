@@ -6,52 +6,210 @@
     android:layout_height="match_parent"
     tools:context="com.example.bart.firstapp2.MainActivity">
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="94dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="9dp"
-        android:ems="10"
-        android:inputType="textPersonName|number"
-        android:text="0"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        tools:layout_editor_absoluteY="8dp" />
-
-    <TextView
-        android:id="@+id/textView"
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/GridLayout1"
         android:layout_width="wrap_content"
-        android:layout_height="44dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Pompki"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="56dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="+10"
-        app:layout_constraintStart_toEndOf="@+id/editText"
-        tools:layout_editor_absoluteY="8dp" />
+        android:columnCount="5"
+        android:rowCount="5"
+        android:orientation="vertical"
+        tools:context=".GridXMLActivity" >
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="56dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="+20"
-        app:layout_constraintStart_toEndOf="@+id/button"
-        tools:layout_editor_absoluteY="8dp" />
+        <TextView
+            android:id="@+id/textViewEx1"
+            android:layout_column="0"
+            android:layout_gravity="left|top"
+            android:layout_row="0"
+            android:text="@string/exercise1"
+            android:textSize='12sp' />
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="53dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:text="+30"
-        app:layout_constraintStart_toEndOf="@+id/button3"
-        tools:layout_editor_absoluteY="8dp" />
+        <EditText
+            android:id="@+id/ex1Value"
+            android:layout_gravity="left|top"
+            android:ems="4"
+            android:textSize='12sp'
+            android:inputType="numberDecimal"
+            android:layout_column="1"
+            android:layout_row="0"
+            android:text="@string/initValue"/>
+
+        <Button
+            android:id="@+id/button1Ex1"
+            android:layout_column="2"
+            android:layout_gravity="left|top"
+            android:layout_row="0"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="onClickButton"
+            android:text="@string/button10" />
+
+        <Button
+            android:id="@+id/button2Ex1"
+            android:layout_column="3"
+            android:layout_gravity="left|top"
+            android:layout_row="0"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="onClickButton"
+            android:text="@string/button20" />
+
+        <Button
+            android:id="@+id/button3Ex1"
+            android:layout_column="4"
+            android:layout_gravity="left|top"
+            android:layout_row="0"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="onClickButton"
+            android:text="@string/button30" />
+
+        <TextView
+            android:id="@+id/textViewEx2"
+            android:layout_gravity="left|top"
+            android:layout_column="0"
+            android:layout_row="1"
+            android:text="@string/exercise2"
+            android:textSize='12sp' />
+
+        <EditText
+            android:id="@+id/ex2Value"
+            android:layout_gravity="left|top"
+            android:ems="4"
+            android:textSize='12sp'
+            android:inputType="numberDecimal"
+            android:layout_column="1"
+            android:layout_row="1"
+            android:text="@string/initValue"/>
+
+        <Button
+            android:id="@+id/button1Ex2"
+            android:layout_column="2"
+            android:layout_gravity="left|top"
+            android:layout_row="1"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="onClickButton"
+            android:text="@string/button10" />
+
+        <Button
+            android:id="@+id/button2Ex2"
+            android:layout_column="3"
+            android:layout_gravity="left|top"
+            android:layout_row="1"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="onClickButton"
+            android:text="@string/button20" />
+
+        <Button
+            android:id="@+id/button3Ex2"
+            android:layout_column="4"
+            android:layout_gravity="left|top"
+            android:layout_row="1"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="onClickButton"
+            android:text="@string/button30" />
+
+        <TextView
+            android:id="@+id/textViewEx3"
+            android:layout_gravity="left|top"
+            android:layout_column="0"
+            android:layout_row="2"
+            android:text="@string/exercise3"
+            android:textSize='12sp' />
+
+        <EditText
+            android:id="@+id/ex3Value"
+            android:layout_gravity="left|top"
+            android:ems="4"
+            android:textSize='12sp'
+            android:inputType="numberDecimal"
+            android:layout_column="1"
+            android:layout_row="2"
+            android:text="@string/initValue"/>
+
+        <Button
+            android:id="@+id/button1Ex3"
+            android:layout_column="2"
+            android:layout_gravity="left|top"
+            android:layout_row="2"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="onClickButton"
+            android:text="@string/button10" />
+
+        <Button
+            android:id="@+id/button2Ex3"
+            android:layout_column="3"
+            android:layout_gravity="left|top"
+            android:layout_row="2"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="onClickButton"
+            android:text="@string/button20" />
+
+        <Button
+            android:id="@+id/button3Ex3"
+            android:layout_column="4"
+            android:layout_gravity="left|top"
+            android:layout_row="2"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="onClickButton"
+            android:text="@string/button30" />
+
+        <TextView
+            android:id="@+id/textViewEx4"
+            android:layout_gravity="left|top"
+            android:layout_column="0"
+            android:layout_row="3"
+            android:text="@string/exercise4"
+            android:textSize='12sp' />
+
+        <EditText
+            android:id="@+id/ex4Value"
+            android:layout_gravity="left|top"
+            android:ems="4"
+            android:textSize='12sp'
+            android:inputType="numberDecimal"
+            android:layout_column="1"
+            android:layout_row="3"
+            android:text="@string/initValue"/>
+
+        <Button
+            android:id="@+id/button1Ex4"
+            android:layout_column="2"
+            android:layout_gravity="left|top"
+            android:layout_row="3"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="onClickButton"
+            android:text="+0.1" />
+
+        <Button
+            android:id="@+id/button2Ex4"
+            android:layout_column="3"
+            android:layout_gravity="left|top"
+            android:layout_row="3"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="onClickButton"
+            android:text="+0.5" />
+
+        <Button
+            android:id="@+id/button3Ex4"
+            android:layout_column="4"
+            android:layout_gravity="left|top"
+            android:layout_row="3"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:onClick="onClickButton"
+            android:text="+1" />
+    </GridLayout>
+
+
+
 
 </android.support.constraint.ConstraintLayout>
