@@ -17,6 +17,17 @@ public class DailyWorkout implements Serializable {
         exercises = new double[4];
     }
 
+    //one more constructor to load object from csv line
+    public DailyWorkout(String csvLine) {
+        currentDate = LocalDate.now();
+        exercises = new double[4];
+        for(int i =0; i<exercises.length +1; i++ ) {
+            String[] splitted = csvLine.split(", ")
+        }
+        exercises = new double[4];
+    }
+
+
     public boolean addReps(int exerciseId, double reps) {
         exercises[exerciseId] = reps;
         return true;

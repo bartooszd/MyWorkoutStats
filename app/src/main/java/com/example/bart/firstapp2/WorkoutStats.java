@@ -196,5 +196,10 @@ public class WorkoutStats implements Serializable{
             e.printStackTrace();
         }
     }
+
+    public void loadFromCsv(String fileName) {
+
+    }
+
 }
 
