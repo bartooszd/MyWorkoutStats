@@ -11,4 +11,16 @@
     <string name="button01">+0.1</string>
     <string name="button05">+0.5</string>
     <string name="button1">+1</string>
+    <string name="MainButton1">Capture Daily Activity</string>
+    <string name="MainButton2">View History</string>
+    <string name="MainButton3">Settings</string>
+    <string name="MainButton4">Export to CSV</string>
+    <string name="MainButton5">Save/Load</string>
+    <string name="title_activity_history">HistoryActivity</string>
+    <string name="action_saveToFile">Save</string>
+    <string name="action_loadToFile">Load</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+    </string>
+    <string name="action_settings">Settings</string>
 </resources>
