@@ -177,6 +177,7 @@ public class WorkoutStats implements Serializable{
         ListIterator<DailyWorkout> litr = myList.listIterator();
         Log.i(TAG, "MyLog.saveToCsv() - size of list: " + myList.size());
 
+        // preparing string with all exercises in csv format
         while (litr.hasNext()) {
             csvExport = csvExport + litr.next().toCsv();
         }
@@ -189,7 +190,7 @@ public class WorkoutStats implements Serializable{
             //second argument of FileOutputStream constructor indicates whether to append or create new file if one exists
             outputStream = new FileOutputStream(fileReference, false);
 
-            outputStream.write(test.getBytes());
+            outputStream.write(csvExport.getBytes());
             outputStream.flush();
             outputStream.close();
         } catch (Exception e) {
