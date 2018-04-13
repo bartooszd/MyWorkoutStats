@@ -11,7 +11,11 @@ import android.widget.Spinner;
 
 import org.joda.time.LocalDate;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 import static android.content.ContentValues.TAG;
 
@@ -62,12 +66,15 @@ public class SaveLoad extends AppCompatActivity {
     }
 
     public void onClicLoad(View arg0) {
+        WorkoutStats wStats = WorkoutStats.getInstance();
         Spinner fileSpinner = (Spinner) findViewById(R.id.Load_spinner);
         String fileNameToLoad = String.valueOf(fileSpinner.getSelectedItem());
         Log.i(TAG, "MyLog.onClicLoad() — File selected is " + fileNameToLoad);
 
         File directory = new File(Environment.getExternalStorageDirectory(), "MyWorkoutStats");
         File fileReference = new File(directory.toString() + "/" + fileNameToLoad);
+
+        wStats.loadFromCsv(fileReference);
 
 
     }

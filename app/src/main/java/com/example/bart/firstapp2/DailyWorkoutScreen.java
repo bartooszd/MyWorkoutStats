@@ -40,6 +40,11 @@ public class DailyWorkoutScreen extends AppCompatActivity {
     public void onPause() {
         super.onPause();  // Always call the superclass method first
 
+        myWorkoutStats.addWorkout(0, Double.valueOf(((EditText)findViewById(R.id.ex1Value)).getText().toString()));
+        myWorkoutStats.addWorkout(1, Double.valueOf(((EditText)findViewById(R.id.ex2Value)).getText().toString()));
+        myWorkoutStats.addWorkout(2, Double.valueOf(((EditText)findViewById(R.id.ex3Value)).getText().toString()));
+        myWorkoutStats.addWorkout(3, Double.valueOf(((EditText)findViewById(R.id.ex4Value)).getText().toString()));
+
         Log.i(TAG, "MyLog.MainActivity() — serializing object to file");
         myWorkoutStats.saveObject(); // serialize the object to file
         Log.i(TAG, "MyLog.MainActivity() — Size of list after serializing: " + myWorkoutStats.myList.size());

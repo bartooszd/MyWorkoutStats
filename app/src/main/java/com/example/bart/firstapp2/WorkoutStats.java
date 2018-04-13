@@ -5,9 +5,12 @@ import android.util.Log;
 
 import org.joda.time.LocalDate;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Iterator;
@@ -198,8 +201,24 @@ public class WorkoutStats implements Serializable{
         }
     }
 
-    public void loadFromCsv(String fileName) {
+    public void loadFromCsv(File fileReference) {
+        String s;
+        myList = new LinkedList<DailyWorkout>();
 
+        try {
+            FileInputStream fIn = new FileInputStream(fileReference);
+            BufferedReader myReader = new BufferedReader(new InputStreamReader(fIn));
+            while ((s = myReader.readLine()) != null) {
+                Log.i(TAG, "MyLog.onClicLoad() — Adding line to file: " + s);
+                myList.add(new DailyWorkout(s));
+            }
+            myReader.close();
+
+//            this.textView.setText(fileContent);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

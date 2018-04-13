@@ -21,10 +21,11 @@ public class DailyWorkout implements Serializable {
     public DailyWorkout(String csvLine) {
         currentDate = LocalDate.now();
         exercises = new double[4];
-        for(int i =0; i<exercises.length +1; i++ ) {
-            String[] splitted = csvLine.split(", ");
+        String[] splitted = csvLine.split(", ");
+        currentDate = LocalDate.parse(splitted[0]);
+        for (int i=0; i<4; i++) {
+            exercises[i] = Double.valueOf(splitted[i+1]);
         }
-        exercises = new double[4];
     }
 
 
