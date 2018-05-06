@@ -1,4 +1,4 @@
-package com.example.bart.firstapp2;
+package com.example.bart.MyWorkoutHistory;
 
 import android.os.Environment;
 import android.util.Log;
@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.io.Serializable;
 import java.util.ListIterator;

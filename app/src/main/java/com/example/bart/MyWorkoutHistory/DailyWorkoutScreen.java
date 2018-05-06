@@ -1,4 +1,4 @@
-package com.example.bart.firstapp2;
+package com.example.bart.MyWorkoutHistory;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.bart.firstapp2.R;
 
 import static android.content.ContentValues.TAG;
 

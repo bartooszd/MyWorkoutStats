@@ -1,4 +1,4 @@
-package com.example.bart.firstapp2;
+package com.example.bart.MyWorkoutHistory;
 
 import org.joda.time.LocalDate;
 

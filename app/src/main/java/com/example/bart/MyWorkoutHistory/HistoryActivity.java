@@ -1,4 +1,4 @@
-package com.example.bart.firstapp2;
+package com.example.bart.MyWorkoutHistory;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.bart.firstapp2.R;
 
 import static android.content.ContentValues.TAG;
 

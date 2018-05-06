@@ -1,4 +1,4 @@
-package com.example.bart.firstapp2;
+package com.example.bart.MyWorkoutHistory;
 
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -9,13 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.bart.firstapp2.R;
+
 import org.joda.time.LocalDate;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 import static android.content.ContentValues.TAG;
 
