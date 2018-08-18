@@ -13,9 +13,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.io.Serializable;
 import java.util.ListIterator;
+import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
 
@@ -24,19 +28,21 @@ import static android.content.ContentValues.TAG;
  */
 
 public class WorkoutStats implements Serializable{
-    private static final WorkoutStats instance = new WorkoutStats();
+    private static WorkoutStats instance;
+    private int numberOfExercises = 5;
+    public Wallet walletInstance = new Wallet(numberOfExercises);
+
 
     LocalDate lastEditDate = new LocalDate();
-    String[] exerciseName = {"pompki", "brzuski", "przysiady", "rower"};
+//    String[] exerciseName = {"pompki", "brzuski", "przysiady", "rower", "orbi"};
     LinkedList<DailyWorkout> myList = new LinkedList<DailyWorkout>();
-
+    static String appVersion = "v1";
 
     // Private constructor prevents instantiation from other classes
     private WorkoutStats()  {
 //        loadSampleData();
         // Load from saved file
-        Log.i(TAG, "MyLog.WorkoutStats() — Loading serializing object from file");
-        loadSerializedObject(); // serialize the object from file
+
         if (myList.size() == 0) {
             DailyWorkout newTraining = new DailyWorkout();
             myList.add(newTraining);
@@ -44,6 +50,9 @@ public class WorkoutStats implements Serializable{
     }
 
     public static WorkoutStats getInstance() {
+        if(instance == null){
+            instance = new WorkoutStats();
+        }
         return instance;
     }
 
@@ -73,6 +82,26 @@ public class WorkoutStats implements Serializable{
         }
     }
 
+    public void setTodayWorkoutTime(long timeToSet) {
+        LocalDate currentDate = LocalDate.now();
+
+        if(currentDate.compareTo(lastEditDate)==0) {
+            Log.i(TAG, "MyLog.setTodayWorkoutTime() — dates are equal");
+
+            myList.getLast().addWourkoutTime(timeToSet);
+            lastEditDate = LocalDate.now();
+            Log.i(TAG, "MyLog.setTodayWorkoutTime() — workout time stored: " + timeToSet);
+        }
+        else {
+            Log.i(TAG, "MyLog.setTodayWorkoutTime() — dates are not equal");
+            DailyWorkout newTraining = new DailyWorkout();
+            newTraining.addWourkoutTime(timeToSet);
+            myList.add(newTraining);
+            lastEditDate = LocalDate.now();
+            Log.i(TAG, "MyLog.setTodayWorkoutTime() — workout time stored: " + timeToSet);
+        }
+    }
+
     public void loadSampleData() {
         LinkedList<DailyWorkout> myList2 = new LinkedList<DailyWorkout>();
 
@@ -90,13 +119,24 @@ public class WorkoutStats implements Serializable{
         myList = myList2;
     }
 
-    public Double getWorkout(int exerciseID) {
+    public Double getTodaysWorkout(int exerciseID) {
         LocalDate currentDate = LocalDate.now();
         Double result = 0.0;
 
         if(currentDate.compareTo(lastEditDate)==0 && !myList.isEmpty()) {
-            Log.i(TAG, "MyLog.getWorkout() — dates are equal");
+            Log.i(TAG, "MyLog.getTodaysWorkout() — dates are equal. Reading exercise: " +exerciseID );
             result = myList.getLast().readReps(exerciseID);
+        }
+        return result;
+    }
+
+    public long getTodayWorkoutTime() {
+        LocalDate currentDate = LocalDate.now();
+        long result = 0;
+
+        if(currentDate.compareTo(lastEditDate)==0 && !myList.isEmpty()) {
+            Log.i(TAG, "MyLog.getTodayWorkoutTime() — dates are equal");
+            result = myList.getLast().readWorkoutTime();
         }
 
         return result;
@@ -105,8 +145,8 @@ public class WorkoutStats implements Serializable{
     public void saveObject(){
         try
         {
-
             Log.i(TAG, "MyLog.saveObject — saving history: " + getHistory());
+            Log.i(TAG, "MyLog.saveObject — saving credits for 1st exercise: " + walletInstance.getCredit(0));
             ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/sdcard/my_workouts_saved.bin")));
             oos.writeObject(this); // write the class as an 'object'
             oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin'
@@ -131,8 +171,8 @@ public class WorkoutStats implements Serializable{
                 WorkoutStats ws = (WorkoutStats) ois.readObject();
                 this.lastEditDate = ws.lastEditDate;
                 this.myList = ws.myList;
+                this.walletInstance = ws.walletInstance;
 //                Log.i(TAG, "MyLog.loadSerializedObject() — loaded reps for exercize 0: " + ws.myList.getLast().exercises[0]);
-                Log.i(TAG, "MyLog.loadSerializedObject() — loaded reps for exercize 0: " + myList.getLast().exercises[0]);
             }
             catch(Exception ex)
             {
@@ -169,13 +209,21 @@ public class WorkoutStats implements Serializable{
         File directory = new File(Environment.getExternalStorageDirectory(), "MyWorkoutStats");
         if (!directory.exists()) {
             directory.mkdirs();
+            Log.i(TAG, "MyLog.saveToCsv() - Created directory: " + directory.toString());
         }
-        Log.i(TAG, "MyLog.saveToCsv() - Created directory: " + directory.toString());
 
         //Create a file
         File fileReference = new File(directory.toString() + "/" + fileName + ".csv");
 
         //Create a string to save
+        //first save version of file so that it is known what is the format and how to load it
+        csvExport = appVersion + "\n";
+
+        //Save wallet information
+        csvExport = csvExport + walletInstance.getAcountBalance() + "\n";
+        csvExport = csvExport + walletInstance.getLastWithdrawal() + "\n";
+
+        //now iterate through daily workouts and save them
         ListIterator<DailyWorkout> litr = myList.listIterator();
         Log.i(TAG, "MyLog.saveToCsv() - size of list: " + myList.size());
 
@@ -203,20 +251,37 @@ public class WorkoutStats implements Serializable{
     public void loadFromCsv(File fileReference) {
         String s;
         myList = new LinkedList<DailyWorkout>();
+        String loadedAppVersion = "";
+        int loadedAccountBalance = 0;
+        Date loadedLastWithdrowalDate;
 
         try {
             FileInputStream fIn = new FileInputStream(fileReference);
             BufferedReader myReader = new BufferedReader(new InputStreamReader(fIn));
+            if((s = myReader.readLine()) != null) {
+                loadedAppVersion = s;
+                Log.i(TAG, "MyLog.onClickLoad() — Loading version: " + s);
+            }
+            if((s = myReader.readLine()) != null) {
+                loadedAccountBalance = Integer.parseInt(s);
+                Log.i(TAG, "MyLog.onClickLoad() — Loading balance: " + s);
+            }
+            if((s = myReader.readLine()) != null) {
+                DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+                loadedLastWithdrowalDate = format.parse(s);
+                Log.i(TAG, "MyLog.onClickLoad() — Loading date: " + s);
+            }
+
             while ((s = myReader.readLine()) != null) {
-                Log.i(TAG, "MyLog.onClicLoad() — Adding line to file: " + s);
-                myList.add(new DailyWorkout(s));
+                Log.i(TAG, "MyLog.onClickLoad() — Reading line from file: " + s);
+                myList.add(new DailyWorkout(s, loadedAppVersion ));
             }
             myReader.close();
 
-//            this.textView.setText(fileContent);
-
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (java.text.ParseException p) {
+            p.printStackTrace();
         }
     }
 

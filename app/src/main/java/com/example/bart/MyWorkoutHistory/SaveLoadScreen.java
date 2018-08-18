@@ -17,7 +17,7 @@ import java.io.File;
 
 import static android.content.ContentValues.TAG;
 
-public class SaveLoad extends AppCompatActivity {
+public class SaveLoadScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class SaveLoad extends AppCompatActivity {
         for (int i = 0; i <numberOfFies; i++)
         {
             fileNames[i] = files[i].getName().toString();
-            Log.i(TAG, "MyLog.onClicLoad() — Found file :" + fileNames[i]);
+//            Log.i(TAG, "MyLog.onClickLoad() — Found file :" + fileNames[i]);
 
         }
 
@@ -63,11 +63,11 @@ public class SaveLoad extends AppCompatActivity {
         wStats.saveToCsv(fileName);
     }
 
-    public void onClicLoad(View arg0) {
+    public void onClickLoad(View arg0) {
         WorkoutStats wStats = WorkoutStats.getInstance();
         Spinner fileSpinner = (Spinner) findViewById(R.id.Load_spinner);
         String fileNameToLoad = String.valueOf(fileSpinner.getSelectedItem());
-        Log.i(TAG, "MyLog.onClicLoad() — File selected is " + fileNameToLoad);
+        Log.i(TAG, "MyLog.onClickLoad() — File selected is " + fileNameToLoad);
 
         File directory = new File(Environment.getExternalStorageDirectory(), "MyWorkoutStats");
         File fileReference = new File(directory.toString() + "/" + fileNameToLoad);

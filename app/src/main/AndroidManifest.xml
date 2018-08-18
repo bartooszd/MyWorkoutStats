@@ -3,7 +3,7 @@
     package="com.example.bart.firstapp2">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.example.bart.MyWorkoutHistory.MainActivity"
+        <activity
+            android:name="com.example.bart.MyWorkoutHistory.MainActivity"
             android:theme="@style/MyWorkoutTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +26,17 @@
             android:name="com.example.bart.MyWorkoutHistory.HistoryActivity"
             android:label="@string/title_activity_history"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.example.bart.MyWorkoutHistory.SaveLoad"></activity>
+        <activity android:name="com.example.bart.MyWorkoutHistory.SaveLoadScreen" />
+        <activity
+            android:name="com.example.bart.MyWorkoutHistory.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="com.example.bart.MyWorkoutHistory.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.bart.MyWorkoutHistory.MainActivity" />
+        </activity>
+        <activity android:name="com.example.bart.MyWorkoutHistory.CreditSettingsActivity"></activity>
     </application>
 
 </manifest>

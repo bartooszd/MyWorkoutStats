@@ -1,12 +1,13 @@
 package com.example.bart.MyWorkoutHistory;
 
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
+import android.widget.Chronometer;
 import com.example.bart.firstapp2.R;
 
 import static android.content.ContentValues.TAG;
@@ -14,30 +15,43 @@ import static android.content.ContentValues.TAG;
 public class DailyWorkoutScreen extends AppCompatActivity {
 
     WorkoutStats myWorkoutStats;
+    Chronometer myChronometer;
+    long startOfWorkoutCounter= 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daily_workout_screen);
+        myChronometer = (Chronometer)findViewById(R.id.chronometer);
 
         EditText eText;
 
-        Log.i(TAG, "MyLog.MainActivity() — Will get Workout Stats");
-
         myWorkoutStats = WorkoutStats.getInstance();
 
+        //start timer adding time captured earlier
+        Log.i(TAG, "MyLog.MainActivity() — Starting timer with" + SystemClock.elapsedRealtime() +" + " + myWorkoutStats.getTodayWorkoutTime());
+        myChronometer.setBase(SystemClock.elapsedRealtime()- myWorkoutStats.getTodayWorkoutTime());
+        //myChronometer.setBase(SystemClock.elapsedRealtime() - 2000);
+        myChronometer.start();
+        startOfWorkoutCounter = SystemClock.elapsedRealtime();
+
+        // Set the values of already captured reps for today
         eText = (EditText) findViewById(R.id.ex1Value);
-        Log.i(TAG, "MyLog.MainActivity() — Will load workout 1: " + myWorkoutStats.getWorkout(0).toString());
-        eText.setText(myWorkoutStats.getWorkout(0).toString());
+        eText.setText(myWorkoutStats.getTodaysWorkout(0).toString());
         eText = (EditText) findViewById(R.id.ex2Value);
-        Log.i(TAG, "MyLog.MainActivity() — Will load workout 2");
-        eText.setText(myWorkoutStats.getWorkout(1).toString());
+        eText.setText(myWorkoutStats.getTodaysWorkout(1).toString());
         eText = (EditText) findViewById(R.id.ex3Value);
-        eText.setText(myWorkoutStats.getWorkout(2).toString());
+        eText.setText(myWorkoutStats.getTodaysWorkout(2).toString());
         eText = (EditText) findViewById(R.id.ex4Value);
-        eText.setText(myWorkoutStats.getWorkout(3).toString());
+        eText.setText(myWorkoutStats.getTodaysWorkout(3).toString());
+        eText = (EditText) findViewById(R.id.ex5Value);
+        eText.setText(myWorkoutStats.getTodaysWorkout(4).toString());
+
+        //calculate value of wallet
+        Double walletBalance = WorkoutStats.walletInstance.calculateWalletBalance(myWorkoutStats.myList);
     }
 
+    // save the reps if app is switched to some other app
     @Override
     public void onPause() {
         super.onPause();  // Always call the superclass method first
@@ -46,10 +60,16 @@ public class DailyWorkoutScreen extends AppCompatActivity {
         myWorkoutStats.addWorkout(1, Double.valueOf(((EditText)findViewById(R.id.ex2Value)).getText().toString()));
         myWorkoutStats.addWorkout(2, Double.valueOf(((EditText)findViewById(R.id.ex3Value)).getText().toString()));
         myWorkoutStats.addWorkout(3, Double.valueOf(((EditText)findViewById(R.id.ex4Value)).getText().toString()));
+        myWorkoutStats.addWorkout(4, Double.valueOf(((EditText)findViewById(R.id.ex5Value)).getText().toString()));
 
-        Log.i(TAG, "MyLog.MainActivity() — serializing object to file");
+        // stop counting time
+        myChronometer.stop();
+
+        Log.i(TAG, "MyLog.DailyWorkoutScreen() — saving time: " + SystemClock.elapsedRealtime() + " - " + startOfWorkoutCounter);
+        myWorkoutStats.setTodayWorkoutTime(SystemClock.elapsedRealtime() - startOfWorkoutCounter);
+
+        Log.i(TAG, "MyLog.DailyWorkoutScreen() — serializing object to file");
         myWorkoutStats.saveObject(); // serialize the object to file
-        Log.i(TAG, "MyLog.MainActivity() — Size of list after serializing: " + myWorkoutStats.myList.size());
     }
 
     public void onClickButton(View arg0) {
@@ -73,9 +93,12 @@ public class DailyWorkoutScreen extends AppCompatActivity {
         } else if (buttonId == R.id.button1Ex4 || buttonId == R.id.button2Ex4 || buttonId == R.id.button3Ex4) {
             eText = findViewById(R.id.ex4Value);
             exerciseId = 3;
+        } else if (buttonId == R.id.button1Ex5 || buttonId == R.id.button2Ex5 || buttonId == R.id.button3Ex5) {
+            eText = findViewById(R.id.ex5Value);
+            exerciseId = 4;
         } else {
-            eText = findViewById(R.id.ex4Value);
-            exerciseId = 3;
+            eText = findViewById(R.id.ex5Value);
+            exerciseId = 4;
         }
 
         incrementValue = Double.valueOf(increment.substring(1));
