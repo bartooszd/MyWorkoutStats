@@ -2,9 +2,10 @@ package com.example.bart.MyWorkoutHistory;
 
 import android.util.Log;
 
+import org.joda.time.LocalDate;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
@@ -12,13 +13,30 @@ import static android.content.ContentValues.TAG;
 
 /**
  * Created by bart on 15.07.2018.
+ * Credits are calculated from previous days so last date of summing it up has to be recorded
  */
 
 public class Wallet implements Serializable {
     int accountBalance;
-    Date lastWithdrawal;
+    LocalDate lastDateIncluededInBalance;
     ArrayList exercisesRatio;
     int numberOfExercises;
+    LinkedList<Withdrowal> historyOfWithdrowals = new LinkedList<Withdrowal>();
+
+    private class Withdrowal {
+        public LocalDate withdrowalDate;
+        public int amount;
+
+        public Withdrowal() {
+            withdrowalDate = LocalDate.now();
+            amount =0;
+        }
+
+        public Withdrowal(LocalDate withdrowalDate, int amount ) {
+            this.withdrowalDate = withdrowalDate;
+            this.amount = amount;
+        }
+    }
 
     public Wallet(int numberOfExercises) {
         accountBalance = 0;
@@ -34,7 +52,7 @@ public class Wallet implements Serializable {
         exercisesRatio.add(4, 0.1);
     }
 
-    public void setWalletValues(int balance, Date dateOfLastWithdrawal) {
+    public void setWalletValues(int balance, LocalDate dateOfLastWithdrawal) {
         accountBalance = balance;
         lastWithdrawal = dateOfLastWithdrawal;
     }
@@ -47,7 +65,7 @@ public class Wallet implements Serializable {
     }
 
     Double calculateWalletBalance(  LinkedList<DailyWorkout> listOfExercises) {
-        Double result;
+        Double result = 0.0;
         
         ListIterator<DailyWorkout> listIterator = listOfExercises.listIterator();
         while (listIterator.hasNext()) {
@@ -61,7 +79,7 @@ public class Wallet implements Serializable {
         return accountBalance;
     }
 
-    public Date getLastWithdrawal() {
+    public LocalDate getLastWithdrawal() {
         return lastWithdrawal;
     }
 
