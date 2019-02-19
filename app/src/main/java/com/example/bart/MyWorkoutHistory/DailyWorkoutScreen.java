@@ -1,5 +1,6 @@
 package com.example.bart.MyWorkoutHistory;
 
+import android.app.Activity;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,11 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Chronometer;
+import android.widget.TextView;
+
 import com.example.bart.firstapp2.R;
 
 import static android.content.ContentValues.TAG;
 
-public class DailyWorkoutScreen extends AppCompatActivity {
+public class DailyWorkoutScreen extends Activity {
 
     WorkoutStats myWorkoutStats;
     Chronometer myChronometer;
@@ -35,6 +38,19 @@ public class DailyWorkoutScreen extends AppCompatActivity {
         myChronometer.start();
         startOfWorkoutCounter = SystemClock.elapsedRealtime();
 
+        // Set the names of exercises
+        TextView vText;
+        vText = findViewById(R.id.textViewEx1);
+        vText.setText(myWorkoutStats.exercisesName[0]);
+        vText = findViewById(R.id.textViewEx2);
+        vText.setText(myWorkoutStats.exercisesName[1]);
+        vText = findViewById(R.id.textViewEx3);
+        vText.setText(myWorkoutStats.exercisesName[2]);
+        vText = findViewById(R.id.textViewEx4);
+        vText.setText(myWorkoutStats.exercisesName[3]);
+        vText = findViewById(R.id.textViewEx5);
+        vText.setText(myWorkoutStats.exercisesName[4]);
+
         // Set the values of already captured reps for today
         eText = (EditText) findViewById(R.id.ex1Value);
         eText.setText(myWorkoutStats.getTodaysWorkout(0).toString());
@@ -47,8 +63,6 @@ public class DailyWorkoutScreen extends AppCompatActivity {
         eText = (EditText) findViewById(R.id.ex5Value);
         eText.setText(myWorkoutStats.getTodaysWorkout(4).toString());
 
-        //calculate value of wallet
-        Double walletBalance = WorkoutStats.walletInstance.calculateWalletBalance(myWorkoutStats.myList);
     }
 
     // save the reps if app is switched to some other app
