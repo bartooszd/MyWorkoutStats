@@ -150,7 +150,19 @@ public class WorkoutStats implements Serializable{
         try
         {
             Log.i(TAG, "MyLog.saveObject — saving history: " + getHistory());
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/sdcard/my_workouts_saved.bin")));
+            // create a directory if it doesn't exist
+            File directory = new File(Environment.getExternalStorageDirectory(), "MyWorkoutStats");
+            if (!directory.exists()) {
+                directory.mkdirs();
+                Log.i(TAG, "MyLog.saveToCsv() - Created directory: " + directory.toString());
+            }
+
+            File serializedFile = new File(directory.toString() + "/my_workouts_saved.bin");
+            Log.i(TAG, "MyLog.saveObject — saving history to: " + serializedFile.toString());
+
+            serializedFile.createNewFile(); // if file already exists will do nothing
+//            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/sdcard/my_workouts_saved.bin")));
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(serializedFile));
             oos.writeObject(this); // write the class as an 'object'
             oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin'
             oos.close();// close the stream
@@ -164,9 +176,8 @@ public class WorkoutStats implements Serializable{
 
     public void loadSerializedObject()
     {
-        Log.i(TAG, "MyLog.loadSerializedObject() — loading history: " + getHistory());
-
-        File savedFile = new File("/sdcard/my_workouts_saved.bin");
+        File savedFile = new File(Environment.getExternalStorageDirectory() + "/MyWorkoutStats/my_workouts_saved.bin");
+        Log.i(TAG, "MyLog.loadSerializedObject() — loading from: " + Environment.getExternalStorageDirectory() + "/MyWorkoutStats/my_workouts_saved.bin");
         if(savedFile.exists() && !savedFile.isDirectory()) {
             try
             {

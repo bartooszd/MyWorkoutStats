@@ -2,7 +2,6 @@ package com.example.bart.MyWorkoutHistory;
 
 import android.app.Activity;
 import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;

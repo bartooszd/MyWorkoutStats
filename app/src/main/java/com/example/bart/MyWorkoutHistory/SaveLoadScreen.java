@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import java.io.FilenameFilter;
 import com.example.bart.firstapp2.R;
 
 import org.joda.time.LocalDate;
@@ -31,7 +33,10 @@ public class SaveLoadScreen extends Activity {
             directory.mkdirs();
         }
         Log.i(TAG, "MyLog.onCreate() — Files location: " + directory.toString());
-        File[] files = directory.listFiles();
+        File[] files = directory.listFiles(new FilenameFilter() {
+            public boolean accept(File directory, String name) {
+                return name.toLowerCase().endsWith(".csv");
+            }});
         int numberOfFies;
 
         // check if not null in case it is run on emulator
@@ -45,8 +50,8 @@ public class SaveLoadScreen extends Activity {
 
         for (int i = 0; i <numberOfFies; i++)
         {
-            fileNames[i] = files[i].getName().toString();
-//            Log.i(TAG, "MyLog.onClickLoad() — Found file :" + fileNames[i]);
+                fileNames[i] = files[i].getName().toString();
+                Log.i(TAG, "MyLog.onClickLoad() — Found file :" + fileNames[i]);
 
         }
 
@@ -87,6 +92,10 @@ public class SaveLoadScreen extends Activity {
 
         wStats.loadFromCsv(fileReference);
 
+        Toast toast = Toast.makeText(getApplicationContext(),
+                "History loaded from file: " + fileNameToLoad,
+                Toast.LENGTH_SHORT);
 
+        toast.show();
     }
 }

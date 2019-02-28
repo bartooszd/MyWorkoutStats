@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.bart.MyWorkoutHistory.SaveLoad">
+    tools:context="com.example.bart.MyWorkoutHistory.SaveLoadScreen">
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="46dp"
         android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="64dp"
         android:onClick="onClickSave"
         android:text="@string/action_saveToFile"
@@ -19,10 +20,11 @@
 
     <Button
         android:id="@+id/button6"
-        android:layout_width="wrap_content"
+        android:layout_width="89dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="48dp"
         android:onClick="onClickLoad"
         android:text="@string/action_loadToFile"
         app:layout_constraintStart_toEndOf="@+id/Load_spinner"
@@ -33,6 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="64dp"
         android:ems="10"
         android:inputType="textPersonName"
@@ -42,10 +45,11 @@
 
     <Spinner
         android:id="@+id/Load_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="213dp"
+        android:layout_height="49dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="48dp"
         android:textSize="14pt"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editSaveText" />

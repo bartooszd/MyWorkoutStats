@@ -25,7 +25,6 @@ public class Wallet implements Serializable {
 
 
     public Wallet(int numberOfExercises) {
-        accountBalance = 16;
         exercisesRatio = new Double[numberOfExercises];
         this.numberOfExercises = numberOfExercises;
     }
