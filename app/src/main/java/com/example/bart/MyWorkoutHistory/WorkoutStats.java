@@ -202,11 +202,12 @@ public class WorkoutStats implements Serializable{
     public String getHistory() {
         String result = "";
 
-        ListIterator<DailyWorkout> litr = myList.listIterator();
+
+        ListIterator<DailyWorkout> litr = myList.listIterator(myList.size());
         Log.i(TAG, "MyLog.getHistory() - size of list: " + myList.size());
 
-        while (litr.hasNext()) {
-            result = result + litr.next().toString();
+        while (litr.hasPrevious()) {
+            result = result + litr.previous().toString();
         }
         Log.i(TAG, "MyLog.getHistory() - finished getting history");
         return result;
@@ -222,8 +223,9 @@ public class WorkoutStats implements Serializable{
         // create a directory if it doesn't exist
         File directory = new File(Environment.getExternalStorageDirectory(), "MyWorkoutStats");
         if (!directory.exists()) {
-            directory.mkdirs();
-            Log.i(TAG, "MyLog.saveToCsv() - Created directory: " + directory.toString());
+            boolean creation_result = directory.mkdirs();
+            if (creation_result) Log.i(TAG, "MyLog.saveToCsv() - Created directory: " + directory.toString());
+            else Log.i(TAG, "MyLog.saveToCsv() - Failed to create directory: " + directory.toString());
         }
 
         //Create a file
