@@ -18,7 +18,7 @@
     <string name="MainButton3">Settings</string>
     <string name="MainButton4">Export to CSV</string>
     <string name="MainButton5">Save/Load</string>
-    <string name="title_activity_history">HistoryActivity</string>
+    <string name="title_activity_history">History of workouts</string>
     <string name="action_saveToFile">Save</string>
     <string name="action_loadToFile">Load</string>
     <string name="clock_text">Workout time: </string>

@@ -21,22 +21,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.bart.MyWorkoutHistory.DailyWorkoutScreen" />
+        <activity
+            android:name="com.example.bart.MyWorkoutHistory.DailyWorkoutScreen"
+            android:theme="@style/MyWorkoutTheme"/>
         <activity
             android:name="com.example.bart.MyWorkoutHistory.HistoryActivity"
             android:label="@string/title_activity_history"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.example.bart.MyWorkoutHistory.SaveLoadScreen" />
+            android:theme="@style/MyWorkoutStatsTheme2" />
+        <activity
+            android:name="com.example.bart.MyWorkoutHistory.SaveLoadScreen"
+            android:theme="@style/MyWorkoutTheme"/>
         <activity
             android:name="com.example.bart.MyWorkoutHistory.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName="com.example.bart.MyWorkoutHistory.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/MyWorkoutTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.bart.MyWorkoutHistory.MainActivity" />
         </activity>
-        <activity android:name="com.example.bart.MyWorkoutHistory.CreditSettingsActivity"></activity>
+        <activity
+            android:name="com.example.bart.MyWorkoutHistory.CreditSettingsActivity"
+            android:theme="@style/MyWorkoutTheme"/>
+        <activity
+            android:name="com.example.bart.MyWorkoutHistory.CheckoutScreen"
+            android:theme="@style/MyWorkoutTheme"></activity>
     </application>
 
 </manifest>

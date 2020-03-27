@@ -1,11 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -13,10 +14,22 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="MyWorkoutTheme" parent="AppTheme" />
+    <style name="MyWorkoutTheme" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+    </style>
+
+    <style name="MyWorkoutStatsTheme2" parent="AppTheme.NoActionBar" >
+        <item name="colorPrimary">@android:color/background_dark</item>
+        <item name="colorPrimaryDark">@android:color/background_dark</item>
+        <item name="colorAccent">@android:color/holo_blue_dark</item>
+        <item name="android:colorBackground">@android:color/darker_gray</item>
+        <item name="android:colorForeground">?attr/colorPrimary</item>
+        <item name="android:textColorPrimary">?attr/colorButtonNormal</item>
+    </style>
+
 
 </resources>

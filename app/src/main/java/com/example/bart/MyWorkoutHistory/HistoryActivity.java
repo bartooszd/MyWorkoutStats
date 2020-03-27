@@ -1,5 +1,6 @@
 package com.example.bart.MyWorkoutHistory;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,7 +14,7 @@ import com.example.bart.firstapp2.R;
 
 import static android.content.ContentValues.TAG;
 
-public class HistoryActivity extends AppCompatActivity {
+public class HistoryActivity extends Activity {
 
     TextView eText;
 
@@ -21,18 +22,10 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        toolbar.setTitle("History of workouts");
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-            }
-        });
         WorkoutStats wStats = WorkoutStats.getInstance();
         String tmpText = wStats.getHistory();
         eText = findViewById(R.id.HistoryList);
