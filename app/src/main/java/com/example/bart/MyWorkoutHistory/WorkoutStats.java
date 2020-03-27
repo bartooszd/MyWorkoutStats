@@ -30,6 +30,7 @@ import static android.content.ContentValues.TAG;
 public class WorkoutStats implements Serializable{
     private static WorkoutStats instance;
     private int numberOfExercises = 5;
+    public MyFileLogger logFile = new MyFileLogger();
     public Wallet walletInstance = new Wallet(numberOfExercises);
 
     LocalDate lastEditDate = new LocalDate();
@@ -39,9 +40,11 @@ public class WorkoutStats implements Serializable{
     LinkedList<DailyWorkout> myList = new LinkedList<DailyWorkout>();
 
     static String appVersion = "v1";
+//    static File logFile;
 
     // Private constructor prevents instantiation from other classes
     private WorkoutStats()  {
+//        logFile = initiateLofFile();
 //        loadSampleData();
         // Load from saved file
 
@@ -49,6 +52,7 @@ public class WorkoutStats implements Serializable{
             DailyWorkout newTraining = new DailyWorkout();
             myList.add(newTraining);
         }
+        logFile.AddLog("WorkoutStats is being initiated");
     }
 
     public static WorkoutStats getInstance() {
@@ -299,6 +303,31 @@ public class WorkoutStats implements Serializable{
             e.printStackTrace();
         }
     }
+/*
+    private File initiateLofFile() {
+        File createdlogFile = null;
+        // create a directory if it doesn't exist
+        File directory = new File(Environment.getExternalStorageDirectory(), "MyWorkoutStats");
+        if (!directory.exists()) {
+            boolean creation_result = directory.mkdirs();
+            if (creation_result) Log.i(TAG, "MyLog.initiateLofFile() - Created directory: " + directory.toString());
+            else Log.i(TAG, "MyLog.initiateLofFile() - Failed to create directory: " + directory.toString());
+        }
 
+        createdlogFile = new File(directory.toString() + "/MyWorkoutStats.log");
+
+        return createdlogFile;
+    }
+
+    public void logToFile(String infoToLog) {
+        FileOutputStream outputStream;
+        try {
+            outputStream = new FileOutputStream(logFile, true);
+            outputStream.write(infoToLog.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+*/
 }
 

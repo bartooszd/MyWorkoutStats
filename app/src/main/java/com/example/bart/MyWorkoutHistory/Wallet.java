@@ -76,7 +76,9 @@ public class Wallet implements Serializable {
                     lastDateIncluededInBalance = tmpDW.currentDate;
                     Log.i(TAG, "MyLog.Wallet calculateWalletBalance — coins from previous day: " + lastDateIncluededInBalance);
                     Log.i(TAG, "MyLog.Wallet calculateWalletBalance() — added coins from previous day: " + lastDateIncluededInBalance);
+                    MyFileLogger.AddLog("Adding coins from previous day: " + lastDateIncluededInBalance);
                     accountBalance = accountBalance + coinsFromPreviosDay;
+                   MyFileLogger.AddLog("Balance after that: " + accountBalance);
                 }
 
             }
