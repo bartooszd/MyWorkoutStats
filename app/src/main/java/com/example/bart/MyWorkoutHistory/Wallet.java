@@ -2,7 +2,9 @@ package com.example.bart.MyWorkoutHistory;
 
 import android.util.Log;
 
+import org.joda.time.Days;
 import org.joda.time.LocalDate;
+import org.joda.time.Period;
 
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -77,7 +79,10 @@ public class Wallet implements Serializable {
                     Log.i(TAG, "MyLog.Wallet calculateWalletBalance — coins from previous day: " + lastDateIncluededInBalance);
                     Log.i(TAG, "MyLog.Wallet calculateWalletBalance() — added coins from previous day: " + lastDateIncluededInBalance);
                     MyFileLogger.AddLog("Adding coins from previous day: " + lastDateIncluededInBalance);
-                    accountBalance = accountBalance + coinsFromPreviosDay;
+                    if (calculateDailyBonus() > 0) MyFileLogger.AddLog("Adding bonus for daily workout: " + calculateDailyBonus());
+                    if (calculateDailyBonus() < 0) MyFileLogger.AddLog("Adding penelty for longer break: " + calculateDailyBonus());
+                    accountBalance = accountBalance + coinsFromPreviosDay + calculateDailyBonus();
+                    if (accountBalance<0) accountBalance =0;
                    MyFileLogger.AddLog("Balance after that: " + accountBalance);
                 }
 
@@ -134,7 +139,23 @@ public class Wallet implements Serializable {
         for(int i=0; i<exercisesRatio.length; i++)  {
             exercisesRatio[i] = Double.valueOf(split[i]) ;
         }
+    }
 
+    public double calculateDailyBonus() {
+        double dailyBonus = 1.0;
+        double dailyPenalty = -1.0;
+        int numberOfDaysToStartPenalty = 3;
 
+        Period period = new Period(lastDateIncluededInBalance, LocalDate.now());
+//        int numberOfDaysSinceLastTraining = Math.abs(period.getDays());
+        int numberOfDaysSinceLastTraining = Days.daysBetween(lastDateIncluededInBalance,LocalDate.now()).getDays();
+                //Days.daysBetween(lastDateIncluededInBalance,LocalDate.now()).size();
+
+        if(numberOfDaysSinceLastTraining ==1 ) return dailyBonus;
+        if(numberOfDaysSinceLastTraining  > numberOfDaysToStartPenalty ) {
+            int numberOfDaysToPunish = numberOfDaysSinceLastTraining - numberOfDaysToStartPenalty;
+            return numberOfDaysToPunish*dailyPenalty;
+        }
+        return 0.0;
     }
 }
