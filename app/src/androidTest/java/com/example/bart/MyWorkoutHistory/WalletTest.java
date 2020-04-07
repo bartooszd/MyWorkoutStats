@@ -11,31 +11,23 @@ public class WalletTest {
 
     @Test
     public void calculateDailyBonus() {
-        myWorkoutToTest.walletInstance.lastDateIncluededInBalance = LocalDate.now();
-        assertEquals(0.0, myWorkoutToTest.walletInstance.calculateDailyBonus(),0.0);
 
-        myWorkoutToTest.walletInstance.lastDateIncluededInBalance = LocalDate.now().minusDays(1);
-        assertEquals(1.0, myWorkoutToTest.walletInstance.calculateDailyBonus(),0.0);
+        assertEquals(0.0, myWorkoutToTest.walletInstance.calculateDailyBonus(LocalDate.now(), LocalDate.now()),0.0);
 
-        myWorkoutToTest.walletInstance.lastDateIncluededInBalance = LocalDate.now().minusDays(2);
-        assertEquals(0.0, myWorkoutToTest.walletInstance.calculateDailyBonus(),0.0);
+        assertEquals(1.0, myWorkoutToTest.walletInstance.calculateDailyBonus(LocalDate.now().minusDays(1), LocalDate.now()),0.0);
 
-        myWorkoutToTest.walletInstance.lastDateIncluededInBalance = LocalDate.now().minusDays(3);
-        assertEquals(0.0, myWorkoutToTest.walletInstance.calculateDailyBonus(),0.0);
+        assertEquals(0.0, myWorkoutToTest.walletInstance.calculateDailyBonus(LocalDate.now().minusDays(2), LocalDate.now()),0.0);
 
-        myWorkoutToTest.walletInstance.lastDateIncluededInBalance = LocalDate.now().minusDays(4);
-        assertEquals(-1.0, myWorkoutToTest.walletInstance.calculateDailyBonus(),0.0);
+        assertEquals(0.0, myWorkoutToTest.walletInstance.calculateDailyBonus(LocalDate.now().minusDays(3), LocalDate.now()),0.0);
 
-        myWorkoutToTest.walletInstance.lastDateIncluededInBalance = LocalDate.now().minusDays(5);
-        assertEquals(-2.0, myWorkoutToTest.walletInstance.calculateDailyBonus(),0.0);
+        assertEquals(-1.0, myWorkoutToTest.walletInstance.calculateDailyBonus(LocalDate.now().minusDays(4), LocalDate.now()),0.0);
 
-        myWorkoutToTest.walletInstance.lastDateIncluededInBalance = LocalDate.now().minusDays(6);
-        assertEquals(-3.0, myWorkoutToTest.walletInstance.calculateDailyBonus(),0.0);
+        assertEquals(-2.0, myWorkoutToTest.walletInstance.calculateDailyBonus(LocalDate.now().minusDays(5), LocalDate.now()),0.0);
 
-        myWorkoutToTest.walletInstance.lastDateIncluededInBalance = LocalDate.now().minusDays(36);
-        assertEquals(-33.0, myWorkoutToTest.walletInstance.calculateDailyBonus(),0.0);
+        assertEquals(-3.0, myWorkoutToTest.walletInstance.calculateDailyBonus(LocalDate.now().minusDays(6), LocalDate.now()),0.0);
 
-        myWorkoutToTest.walletInstance.lastDateIncluededInBalance = LocalDate.now().minusDays(436);
-        assertEquals(-433.0, myWorkoutToTest.walletInstance.calculateDailyBonus(),0.0);
+        assertEquals(-33.0, myWorkoutToTest.walletInstance.calculateDailyBonus(LocalDate.now().minusDays(36), LocalDate.now()),0.0);
+
+        assertEquals(-433.0, myWorkoutToTest.walletInstance.calculateDailyBonus(LocalDate.now().minusDays(436), LocalDate.now()),0.0);
     }
 }

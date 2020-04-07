@@ -33,6 +33,16 @@ public class MainActivity extends Activity {
         vText = findViewById(R.id.creditsValueTextView);
         vText.setText( String.valueOf( myWorkoutStats.walletInstance.getAccountBalanceInteger()));
 
+        // calculate and display coins from current day
+        TextView dailyCoinsText;
+        dailyCoinsText = findViewById(R.id.creditsFromTodayTextView);
+        double coinsFromToday = myWorkoutStats.walletInstance.calculateCoinsFromToday(myWorkoutStats.myList);
+        dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday) + " + " + String.valueOf(myWorkoutStats.walletInstance.calculateDailyBonusForToday()));
+        if (coinsFromToday > 0)
+            dailyCoinsText.setVisibility(View.VISIBLE);
+        else
+            dailyCoinsText.setVisibility(View.INVISIBLE);
+
         Log.i(TAG, "MyLog.MainActivity() — Will get Workout Stats");
     }
 
@@ -46,6 +56,25 @@ public class MainActivity extends Activity {
         TextView vText;
         vText = findViewById(R.id.creditsValueTextView);
         vText.setText( String.valueOf( myWorkoutStats.walletInstance.getAccountBalanceInteger()));
+
+        // calculate and display coins from current day
+        TextView dailyCoinsText;
+        dailyCoinsText = findViewById(R.id.creditsFromTodayTextView);
+        double coinsFromToday = myWorkoutStats.walletInstance.calculateCoinsFromToday(myWorkoutStats.myList);
+        double dailyBonusForToday = myWorkoutStats.walletInstance.calculateDailyBonusForToday();
+        if (dailyBonusForToday > 0)
+            dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday) + " + " + String.valueOf(dailyBonusForToday));
+        else if (dailyBonusForToday < 0)
+            dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday) + " - " + String.valueOf(dailyBonusForToday *(-1)));
+        else
+            dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday));
+
+            if (coinsFromToday > 0)
+            dailyCoinsText.setVisibility(View.VISIBLE);
+        else
+            dailyCoinsText.setVisibility(View.INVISIBLE);
+
+        Log.i(TAG, "MyLog.MainActivity() — Will get Workout Stats");
     }
 
 
