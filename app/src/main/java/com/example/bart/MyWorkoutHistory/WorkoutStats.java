@@ -30,13 +30,17 @@ import static android.content.ContentValues.TAG;
 public class WorkoutStats implements Serializable{
     private static WorkoutStats instance;
     private int numberOfExercises = 5;
+    public MyFileLogger logFile = new MyFileLogger();
     public Wallet walletInstance = new Wallet(numberOfExercises);
 
-
     LocalDate lastEditDate = new LocalDate();
-//    String[] exerciseName = {"pompki", "brzuski", "przysiady", "rower", "orbi"};
+
+
+    public String[] exercisesName = {"Pompki", "Brzuski", "Przysiady", "Rower", "Kalorie"};
     LinkedList<DailyWorkout> myList = new LinkedList<DailyWorkout>();
+
     static String appVersion = "v1";
+//    static File logFile;
 
     // Private constructor prevents instantiation from other classes
     private WorkoutStats()  {
@@ -47,6 +51,7 @@ public class WorkoutStats implements Serializable{
             DailyWorkout newTraining = new DailyWorkout();
             myList.add(newTraining);
         }
+        logFile.AddLog("WorkoutStats is being initiated");
     }
 
     public static WorkoutStats getInstance() {
@@ -56,10 +61,6 @@ public class WorkoutStats implements Serializable{
         return instance;
     }
 
-//    public WorkoutStats() {
-//        lastEditDate = LocalDate.now();
-//        myList.add(new DailyWorkout());
-//    }
 
     public void addWorkout(int exerciseID, double reps) {
         LocalDate currentDate = LocalDate.now();
@@ -116,6 +117,8 @@ public class WorkoutStats implements Serializable{
         newTraining2.currentDate = LocalDate.now().minusDays(1);
         myList2.add(newTraining2);
 
+        walletInstance.setWalletValues(12.0, LocalDate.now().minusDays(2));
+
         myList = myList2;
     }
 
@@ -146,8 +149,19 @@ public class WorkoutStats implements Serializable{
         try
         {
             Log.i(TAG, "MyLog.saveObject — saving history: " + getHistory());
-            Log.i(TAG, "MyLog.saveObject — saving credits for 1st exercise: " + walletInstance.getCredit(0));
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/sdcard/my_workouts_saved.bin")));
+            // create a directory if it doesn't exist
+            File directory = new File(Environment.getExternalStorageDirectory(), "MyWorkoutStats");
+            if (!directory.exists()) {
+                directory.mkdirs();
+                Log.i(TAG, "MyLog.saveToCsv() - Created directory: " + directory.toString());
+            }
+
+            File serializedFile = new File(directory.toString() + "/my_workouts_saved.bin");
+            Log.i(TAG, "MyLog.saveObject — saving history to: " + serializedFile.toString());
+
+            serializedFile.createNewFile(); // if file already exists will do nothing
+//            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("/sdcard/my_workouts_saved.bin")));
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(serializedFile));
             oos.writeObject(this); // write the class as an 'object'
             oos.flush(); // flush the stream to insure all of the information was written to 'save_object.bin'
             oos.close();// close the stream
@@ -161,9 +175,8 @@ public class WorkoutStats implements Serializable{
 
     public void loadSerializedObject()
     {
-        Log.i(TAG, "MyLog.loadSerializedObject() — loading history: " + getHistory());
-
-        File savedFile = new File("/sdcard/my_workouts_saved.bin");
+        File savedFile = new File(Environment.getExternalStorageDirectory() + "/MyWorkoutStats/my_workouts_saved.bin");
+        Log.i(TAG, "MyLog.loadSerializedObject() — loading from: " + Environment.getExternalStorageDirectory() + "/MyWorkoutStats/my_workouts_saved.bin");
         if(savedFile.exists() && !savedFile.isDirectory()) {
             try
             {
@@ -188,11 +201,12 @@ public class WorkoutStats implements Serializable{
     public String getHistory() {
         String result = "";
 
-        ListIterator<DailyWorkout> litr = myList.listIterator();
+
+        ListIterator<DailyWorkout> litr = myList.listIterator(myList.size());
         Log.i(TAG, "MyLog.getHistory() - size of list: " + myList.size());
 
-        while (litr.hasNext()) {
-            result = result + litr.next().toString();
+        while (litr.hasPrevious()) {
+            result = result + litr.previous().toString();
         }
         Log.i(TAG, "MyLog.getHistory() - finished getting history");
         return result;
@@ -208,8 +222,9 @@ public class WorkoutStats implements Serializable{
         // create a directory if it doesn't exist
         File directory = new File(Environment.getExternalStorageDirectory(), "MyWorkoutStats");
         if (!directory.exists()) {
-            directory.mkdirs();
-            Log.i(TAG, "MyLog.saveToCsv() - Created directory: " + directory.toString());
+            boolean creation_result = directory.mkdirs();
+            if (creation_result) Log.i(TAG, "MyLog.saveToCsv() - Created directory: " + directory.toString());
+            else Log.i(TAG, "MyLog.saveToCsv() - Failed to create directory: " + directory.toString());
         }
 
         //Create a file
@@ -220,8 +235,11 @@ public class WorkoutStats implements Serializable{
         csvExport = appVersion + "\n";
 
         //Save wallet information
-        csvExport = csvExport + walletInstance.getAcountBalance() + "\n";
-        csvExport = csvExport + walletInstance.getLastWithdrawal() + "\n";
+        csvExport = csvExport + walletInstance.saveBalanaceToCSV() + "\n";
+
+        //Save ratio set for exercises
+        csvExport = csvExport + walletInstance.saveExerciseRatioToCSV() + "\n";
+     //   csvExport = csvExport + walletInstance.getLastWithdrawal() + "\n";
 
         //now iterate through daily workouts and save them
         ListIterator<DailyWorkout> litr = myList.listIterator();
@@ -252,8 +270,6 @@ public class WorkoutStats implements Serializable{
         String s;
         myList = new LinkedList<DailyWorkout>();
         String loadedAppVersion = "";
-        int loadedAccountBalance = 0;
-        Date loadedLastWithdrowalDate;
 
         try {
             FileInputStream fIn = new FileInputStream(fileReference);
@@ -263,13 +279,13 @@ public class WorkoutStats implements Serializable{
                 Log.i(TAG, "MyLog.onClickLoad() — Loading version: " + s);
             }
             if((s = myReader.readLine()) != null) {
-                loadedAccountBalance = Integer.parseInt(s);
+                walletInstance.readBalanaceFromCSV(s);
                 Log.i(TAG, "MyLog.onClickLoad() — Loading balance: " + s);
             }
+
             if((s = myReader.readLine()) != null) {
-                DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
-                loadedLastWithdrowalDate = format.parse(s);
-                Log.i(TAG, "MyLog.onClickLoad() — Loading date: " + s);
+                walletInstance.loadExerciseRatioFromCSV(s);
+                Log.i(TAG, "MyLog.onClickLoad() — Loading exercise ratios: " + s);
             }
 
             while ((s = myReader.readLine()) != null) {
@@ -280,10 +296,7 @@ public class WorkoutStats implements Serializable{
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (java.text.ParseException p) {
-            p.printStackTrace();
         }
     }
-
 }
 

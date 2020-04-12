@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.bart.firstapp2.R;
 
@@ -21,10 +22,61 @@ public class MainActivity extends Activity {
 
         myWorkoutStats = WorkoutStats.getInstance();
         Log.i(TAG, "MyLog.MainActivity() — Loading serializing object from file");
-        myWorkoutStats.loadSerializedObject(); // serialize the object from file
+       myWorkoutStats.loadSerializedObject(); // serialize the object from file
+
+        //print history
+        Log.i(TAG, "MyLog.MainActivity() — Loaded history: " + myWorkoutStats.getHistory());
+
+        // calculate and display coins account balance
+        myWorkoutStats.walletInstance.calculateWalletBalance(myWorkoutStats.myList);
+        TextView vText;
+        vText = findViewById(R.id.creditsValueTextView);
+        vText.setText( String.valueOf( myWorkoutStats.walletInstance.getAccountBalanceInteger()));
+
+        // calculate and display coins from current day
+        TextView dailyCoinsText;
+        dailyCoinsText = findViewById(R.id.creditsFromTodayTextView);
+        double coinsFromToday = myWorkoutStats.walletInstance.calculateCoinsFromToday(myWorkoutStats.myList);
+        dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday) + " + " + String.valueOf(myWorkoutStats.walletInstance.calculateDailyBonusForToday()));
+        if (coinsFromToday > 0)
+            dailyCoinsText.setVisibility(View.VISIBLE);
+        else
+            dailyCoinsText.setVisibility(View.INVISIBLE);
 
         Log.i(TAG, "MyLog.MainActivity() — Will get Workout Stats");
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        myWorkoutStats = WorkoutStats.getInstance();
+
+        // calculate and display coins account balance
+        myWorkoutStats.walletInstance.calculateWalletBalance(myWorkoutStats.myList);
+        TextView vText;
+        vText = findViewById(R.id.creditsValueTextView);
+        vText.setText( String.valueOf( myWorkoutStats.walletInstance.getAccountBalanceInteger()));
+
+        // calculate and display coins from current day
+        TextView dailyCoinsText;
+        dailyCoinsText = findViewById(R.id.creditsFromTodayTextView);
+        double coinsFromToday = myWorkoutStats.walletInstance.calculateCoinsFromToday(myWorkoutStats.myList);
+        double dailyBonusForToday = myWorkoutStats.walletInstance.calculateDailyBonusForToday();
+        if (dailyBonusForToday > 0)
+            dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday) + " + " + String.valueOf(dailyBonusForToday));
+        else if (dailyBonusForToday < 0)
+            dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday) + " - " + String.valueOf(dailyBonusForToday *(-1)));
+        else
+            dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday));
+
+            if (coinsFromToday > 0)
+            dailyCoinsText.setVisibility(View.VISIBLE);
+        else
+            dailyCoinsText.setVisibility(View.INVISIBLE);
+
+        Log.i(TAG, "MyLog.MainActivity() — Will get Workout Stats");
+    }
+
 
     public void onClickHistory(View arg0) {
         Intent intent = new Intent(this, HistoryActivity.class);
@@ -45,6 +97,12 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
+
+    public void onClickWallet(View arg0) {
+        Intent intent = new Intent(this, CheckoutScreen.class);
+        startActivity(intent);
+    }
+
 
     @Override
     public void onPause() {
