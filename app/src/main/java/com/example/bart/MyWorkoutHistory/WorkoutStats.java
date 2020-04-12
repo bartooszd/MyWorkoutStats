@@ -44,7 +44,6 @@ public class WorkoutStats implements Serializable{
 
     // Private constructor prevents instantiation from other classes
     private WorkoutStats()  {
-//        logFile = initiateLofFile();
 //        loadSampleData();
         // Load from saved file
 
@@ -62,10 +61,6 @@ public class WorkoutStats implements Serializable{
         return instance;
     }
 
-//    public WorkoutStats() {
-//        lastEditDate = LocalDate.now();
-//        myList.add(new DailyWorkout());
-//    }
 
     public void addWorkout(int exerciseID, double reps) {
         LocalDate currentDate = LocalDate.now();
@@ -303,31 +298,5 @@ public class WorkoutStats implements Serializable{
             e.printStackTrace();
         }
     }
-/*
-    private File initiateLofFile() {
-        File createdlogFile = null;
-        // create a directory if it doesn't exist
-        File directory = new File(Environment.getExternalStorageDirectory(), "MyWorkoutStats");
-        if (!directory.exists()) {
-            boolean creation_result = directory.mkdirs();
-            if (creation_result) Log.i(TAG, "MyLog.initiateLofFile() - Created directory: " + directory.toString());
-            else Log.i(TAG, "MyLog.initiateLofFile() - Failed to create directory: " + directory.toString());
-        }
-
-        createdlogFile = new File(directory.toString() + "/MyWorkoutStats.log");
-
-        return createdlogFile;
-    }
-
-    public void logToFile(String infoToLog) {
-        FileOutputStream outputStream;
-        try {
-            outputStream = new FileOutputStream(logFile, true);
-            outputStream.write(infoToLog.getBytes());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-*/
 }
 
