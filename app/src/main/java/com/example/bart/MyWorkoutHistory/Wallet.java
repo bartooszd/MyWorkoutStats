@@ -168,7 +168,7 @@ public class Wallet implements Serializable {
     }
 
     public double calculateDailyBonus(LocalDate previousDate, LocalDate currentDate) {
-        double dailyBonus = 1.0;
+        double dailyBonus = 2.0;
         double dailyPenalty = -1.0;
         int numberOfDaysToStartPenalty = 3;
 
