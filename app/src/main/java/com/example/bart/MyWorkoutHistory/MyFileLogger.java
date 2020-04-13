@@ -6,10 +6,11 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 
 import static android.content.ContentValues.TAG;
 
-public class MyFileLogger {
+public class MyFileLogger implements Serializable {
     static File logFile;
 
     public MyFileLogger()  {
