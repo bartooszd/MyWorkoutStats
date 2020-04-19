@@ -20,7 +20,7 @@ import static android.content.ContentValues.TAG;
 
 public class Wallet implements Serializable {
     double accountBalance;
-    double previousDayBalance;
+//    double previousDayBalance;
     LocalDate lastDateIncludedInBalance;
     LocalDate previousDateIncludedInBalance; //it is needed it balance is recalculated and lastDateIncluededInBalance is set to today
     Double exercisesRatio[];
@@ -29,6 +29,7 @@ public class Wallet implements Serializable {
 
     public Wallet(int numberOfExercises) {
         exercisesRatio = new Double[numberOfExercises];
+        if (lastDateIncludedInBalance == null) lastDateIncludedInBalance = LocalDate.now();
         this.numberOfExercises = numberOfExercises;
         Arrays.fill( exercisesRatio, 0.0);
     }
@@ -79,15 +80,16 @@ public class Wallet implements Serializable {
                         coinsFromPreviosDay = coinsFromPreviosDay + tmpDW.readReps(i) * (Double) exercisesRatio[i];
                     }
                     dailyBonus = calculateDailyBonus(lastDateIncludedInBalance,tmpDW.currentDate);
-                    previousDateIncludedInBalance = lastDateIncludedInBalance;
+//                    previousDateIncludedInBalance = lastDateIncludedInBalance;
                     lastDateIncludedInBalance = tmpDW.currentDate;
                     Log.i(TAG, "MyLog.Wallet calculateWalletBalance — coins from previous day: " + lastDateIncludedInBalance);
                     Log.i(TAG, "MyLog.Wallet calculateWalletBalance() — added coins from previous day: " + lastDateIncludedInBalance);
                     MyFileLogger.AddLog("Adding coins from previous day: " + lastDateIncludedInBalance);
                     if (dailyBonus > 0) MyFileLogger.AddLog("Adding bonus for daily workout: " + dailyBonus);
-                    if (dailyBonus < 0) MyFileLogger.AddLog("Adding penelty for longer break: " + dailyBonus);
+                    if (dailyBonus < 0) MyFileLogger.AddLog("Adding penalty for longer break: " + dailyBonus);
+                    if (dailyBonus == 0) MyFileLogger.AddLog("No daily bonus nor penalty");
                     accountBalance = accountBalance + coinsFromPreviosDay + dailyBonus;
-                    if (accountBalance<0) accountBalance =0; //just in case penelties from daily will take everything
+                    if (accountBalance<0) accountBalance =0; //just in case penalties from daily will take everything
                    MyFileLogger.AddLog("Balance after that: " + accountBalance);
                 }
 
@@ -125,6 +127,7 @@ public class Wallet implements Serializable {
     }
 
     public String saveBalanaceToCSV() {
+        if (lastDateIncludedInBalance == null) lastDateIncludedInBalance = LocalDate.now();
         String result = accountBalance + ", " + lastDateIncludedInBalance;
         return result;
     }
@@ -172,12 +175,14 @@ public class Wallet implements Serializable {
         double dailyPenalty = -1.0;
         int numberOfDaysToStartPenalty = 3;
 
-        int numberOfDaysSinceLastTraining = Days.daysBetween(previousDate,currentDate).getDays();
+        if(previousDate != null && currentDate != null) {
+            int numberOfDaysSinceLastTraining = Days.daysBetween(previousDate,currentDate).getDays();
 
-        if(numberOfDaysSinceLastTraining ==1 ) return dailyBonus;
-        if(numberOfDaysSinceLastTraining  > numberOfDaysToStartPenalty ) {
-            int numberOfDaysToPunish = numberOfDaysSinceLastTraining - numberOfDaysToStartPenalty;
-            return numberOfDaysToPunish*dailyPenalty;
+            if(numberOfDaysSinceLastTraining ==1 ) return dailyBonus;
+            if(numberOfDaysSinceLastTraining  > numberOfDaysToStartPenalty ) {
+                int numberOfDaysToPunish = numberOfDaysSinceLastTraining - numberOfDaysToStartPenalty;
+                return numberOfDaysToPunish*dailyPenalty;
+            }
         }
         return 0.0;
     }
@@ -185,7 +190,7 @@ public class Wallet implements Serializable {
     public double calculateDailyBonusForToday() {
         double bonusForToday = 0;
         if(previousDateIncludedInBalance != null)
-            bonusForToday = calculateDailyBonus(previousDateIncludedInBalance, LocalDate.now());
+            bonusForToday = calculateDailyBonus(lastDateIncludedInBalance, LocalDate.now());
 
         return bonusForToday;
     }

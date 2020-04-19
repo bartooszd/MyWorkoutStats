@@ -64,22 +64,30 @@ public class DailyWorkoutScreen extends Activity {
 
     }
 
-    // save the reps if app is switched to some other app
+    // save the reps if app is switched to some other appr
     @Override
     public void onPause() {
         super.onPause();  // Always call the superclass method first
 
-        myWorkoutStats.addWorkout(0, Double.valueOf(((EditText)findViewById(R.id.ex1Value)).getText().toString()));
-        myWorkoutStats.addWorkout(1, Double.valueOf(((EditText)findViewById(R.id.ex2Value)).getText().toString()));
-        myWorkoutStats.addWorkout(2, Double.valueOf(((EditText)findViewById(R.id.ex3Value)).getText().toString()));
-        myWorkoutStats.addWorkout(3, Double.valueOf(((EditText)findViewById(R.id.ex4Value)).getText().toString()));
-        myWorkoutStats.addWorkout(4, Double.valueOf(((EditText)findViewById(R.id.ex5Value)).getText().toString()));
-
         // stop counting time
         myChronometer.stop();
 
-        Log.i(TAG, "MyLog.DailyWorkoutScreen() — saving time: " + SystemClock.elapsedRealtime() + " - " + startOfWorkoutCounter);
-        myWorkoutStats.setTodayWorkoutTime(SystemClock.elapsedRealtime() - startOfWorkoutCounter);
+        double sumOfWorkout = Double.valueOf(((EditText)findViewById(R.id.ex1Value)).getText().toString())
+                + Double.valueOf(((EditText)findViewById(R.id.ex2Value)).getText().toString())
+                + Double.valueOf(((EditText)findViewById(R.id.ex3Value)).getText().toString())
+                + Double.valueOf(((EditText)findViewById(R.id.ex4Value)).getText().toString())
+                + Double.valueOf(((EditText)findViewById(R.id.ex5Value)).getText().toString());
+
+        if (sumOfWorkout >0 ) {
+            myWorkoutStats.addWorkout(0, Double.valueOf(((EditText) findViewById(R.id.ex1Value)).getText().toString()));
+            myWorkoutStats.addWorkout(1, Double.valueOf(((EditText) findViewById(R.id.ex2Value)).getText().toString()));
+            myWorkoutStats.addWorkout(2, Double.valueOf(((EditText) findViewById(R.id.ex3Value)).getText().toString()));
+            myWorkoutStats.addWorkout(3, Double.valueOf(((EditText) findViewById(R.id.ex4Value)).getText().toString()));
+            myWorkoutStats.addWorkout(4, Double.valueOf(((EditText) findViewById(R.id.ex5Value)).getText().toString()));
+
+            Log.i(TAG, "MyLog.DailyWorkoutScreen() — saving time: " + SystemClock.elapsedRealtime() + " - " + startOfWorkoutCounter);
+            myWorkoutStats.setTodayWorkoutTime(SystemClock.elapsedRealtime() - startOfWorkoutCounter);
+        }
 
         Log.i(TAG, "MyLog.DailyWorkoutScreen() — serializing object to file");
         myWorkoutStats.saveObject(); // serialize the object to file
