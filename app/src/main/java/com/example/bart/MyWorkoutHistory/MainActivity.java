@@ -37,11 +37,14 @@ public class MainActivity extends Activity {
         TextView dailyCoinsText;
         dailyCoinsText = findViewById(R.id.creditsFromTodayTextView);
         double coinsFromToday = myWorkoutStats.walletInstance.calculateCoinsFromToday(myWorkoutStats.myList);
-        dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday) + " + " + String.valueOf(myWorkoutStats.walletInstance.calculateDailyBonusForToday()));
-        if (coinsFromToday > 0)
-            dailyCoinsText.setVisibility(View.VISIBLE);
+        double dailyBonusFromToday = myWorkoutStats.walletInstance.calculateDailyBonusForToday();
+        Log.i(TAG, "MyLog.MainActivity() — Daily bonus for today is: " + dailyBonusFromToday);
+        if (dailyBonusFromToday > 0)
+            dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday) + " + " + String.valueOf(dailyBonusFromToday));
+        else if (dailyBonusFromToday < 0)
+            dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday) + " - " + String.valueOf(dailyBonusFromToday *(-1)));
         else
-            dailyCoinsText.setVisibility(View.INVISIBLE);
+            dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday));
 
         Log.i(TAG, "MyLog.MainActivity() — Will get Workout Stats");
     }
@@ -61,11 +64,12 @@ public class MainActivity extends Activity {
         TextView dailyCoinsText;
         dailyCoinsText = findViewById(R.id.creditsFromTodayTextView);
         double coinsFromToday = myWorkoutStats.walletInstance.calculateCoinsFromToday(myWorkoutStats.myList);
-        double dailyBonusForToday = myWorkoutStats.walletInstance.calculateDailyBonusForToday();
-        if (dailyBonusForToday > 0)
-            dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday) + " + " + String.valueOf(dailyBonusForToday));
-        else if (dailyBonusForToday < 0)
-            dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday) + " - " + String.valueOf(dailyBonusForToday *(-1)));
+        double dailyBonusFromToday = myWorkoutStats.walletInstance.calculateDailyBonusForToday();
+        Log.i(TAG, "MyLog.MainActivity() — Daily bonus for today is: " + dailyBonusFromToday);
+        if (dailyBonusFromToday > 0)
+            dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday) + " + " + String.valueOf(dailyBonusFromToday));
+        else if (dailyBonusFromToday < 0)
+            dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday) + " - " + String.valueOf(dailyBonusFromToday *(-1)));
         else
             dailyCoinsText.setText( "Today: " + String.valueOf( coinsFromToday));
 

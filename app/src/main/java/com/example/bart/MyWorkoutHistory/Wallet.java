@@ -22,7 +22,7 @@ public class Wallet implements Serializable {
     double accountBalance;
 //    double previousDayBalance;
     LocalDate lastDateIncludedInBalance;
-    LocalDate previousDateIncludedInBalance; //it is needed it balance is recalculated and lastDateIncluededInBalance is set to today
+    LocalDate previousDateIncludedInBalance; //it is needed if balance is recalculated and lastDateIncluededInBalance is set to today
     Double exercisesRatio[];
     int numberOfExercises;
 
@@ -189,7 +189,7 @@ public class Wallet implements Serializable {
 
     public double calculateDailyBonusForToday() {
         double bonusForToday = 0;
-        if(previousDateIncludedInBalance != null)
+        if(lastDateIncludedInBalance != null)
             bonusForToday = calculateDailyBonus(lastDateIncludedInBalance, LocalDate.now());
 
         return bonusForToday;
